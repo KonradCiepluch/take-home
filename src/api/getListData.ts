@@ -6,12 +6,15 @@ export type ListItem = {
   title: string;
   description: string;
   isVisible: boolean;
+  isDeleted: boolean;
+  isExpanded: boolean;
 };
 
 export type DeletedListItem = Omit<ListItem, "description">;
 
-export const useGetListData = () => {
+export const useGetListData = (isPersist: boolean) => {
   const query = useQuery({
+    enabled: !isPersist,
     queryKey: ["list"],
     queryFn: async () => {
       await sleep(1000);
@@ -21,12 +24,21 @@ export const useGetListData = () => {
         throw new Error("👀");
       }
 
-      const mockData = mockJson as Omit<ListItem, "isVisible">[];
+      const mockData = mockJson as Omit<
+        ListItem,
+        "isVisible" | "isDeleted" | "isExpanded"
+      >[];
 
       return shuffle(mockData).map((item) => {
-        return { ...item, isVisible: getRandom() > 50 ? true : false };
+        return {
+          ...item,
+          isVisible: getRandom() > 50,
+          isDeleted: false,
+          isExpanded: false,
+        };
       });
     },
+    retry: false,
   });
 
   return query;
