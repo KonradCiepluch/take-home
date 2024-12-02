@@ -1,7 +1,8 @@
 import { useEffect, useCallback } from "react";
 import { useGetListData } from "../api/getListData";
-import { List } from "./List";
 import { useStore } from "../store";
+import { ToggleButton } from "./Buttons";
+import { List } from "./List";
 import { Spinner } from "./Spinner";
 
 export const Entrypoint = () => {
@@ -43,12 +44,12 @@ export const Entrypoint = () => {
     return (
       <div className="flex justify-center items-center">
         {error}
-        <button
+        <ToggleButton
           onClick={refreshData}
-          className="text-white text-sm transition-colors hover:bg-gray-800 disabled:bg-black/75 bg-black rounded px-3 py-1 ml-2"
+          className="text-white text-sm  bg-black rounded px-3 py-1 ml-2"
         >
           Refresh
-        </button>
+        </ToggleButton>
       </div>
     );
 
@@ -64,23 +65,23 @@ export const Entrypoint = () => {
         </h1>
       </List>
       <List cards={isRevealed ? deletedCards : []}>
-        <div className="flex items-center ">
+        <div className="flex items-center mt-3 xl:mt-0">
           <h2 className="mb-3 font-medium text-lg">
             Deleted Cards ({deletedCards.length})
           </h2>
-          <button
+          <ToggleButton
             disabled={isRevealed || deletedCards.length === 0}
             onClick={revealCards}
-            className="text-white text-sm transition-colors hover:bg-gray-800 disabled:bg-slate-400 bg-black rounded px-3 py-1 ml-2 "
+            className="text-white text-sm  disabled:bg-slate-400 bg-black rounded px-3 py-1 ml-2 "
           >
             Reveal
-          </button>
-          <button
+          </ToggleButton>
+          <ToggleButton
             onClick={refreshData}
-            className="text-white text-sm transition-colors hover:bg-gray-800 disabled:bg-black/75 bg-black rounded px-3 py-1 ml-2"
+            className="text-white text-sm bg-black rounded px-3 py-1 ml-2"
           >
             Refresh
-          </button>
+          </ToggleButton>
         </div>
       </List>
     </div>

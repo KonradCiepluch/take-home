@@ -13,6 +13,7 @@ type State = {
 type Actions = {
   expandCard: (id: number) => void;
   deleteCard: (id: number) => void;
+  // revertCard: (id: number) => void;
   revealCards: () => void;
   setCards: (cards: ListItem[]) => void;
   setError: (error: string) => void;
@@ -41,28 +42,50 @@ export const useStore = create<
         },
         deleteCard: (id: number) => {
           set((state) => {
-            const visibleCards = state.visibleCards.filter(
-              (item) => item.id !== id
-            );
             const deletedCard = state.visibleCards.find(
               (item) => item.id === id
             );
+
+            if (!deletedCard) return state;
+
+            const visibleCards = state.visibleCards.filter(
+              (item) => item.id !== id
+            );
+
             return {
               visibleCards,
-              deletedCards: [...state.deletedCards, deletedCard!],
+              deletedCards: [...state.deletedCards, deletedCard],
             };
           });
         },
+        // revertCard: (id: number) => {
+        //   set((state) => {
+        //     const deletedCard = state.deletedCards.find(
+        //       (item) => item.id === id
+        //     );
+
+        //     if (!deletedCard) return state;
+
+        //     const deletedCards = state.deletedCards.filter(
+        //       (item) => item.id !== id
+        //     );
+        //     return {
+        //       visibleCards: [...state.visibleCards, deletedCard],
+        //       deletedCards,
+        //     };
+        //   });
+        // },
         revealCards: () => {
           set(() => {
             return { isRevealed: true };
           });
         },
-        setCards: (cards: ListItem[]) => {
+        setCards: (cards?: ListItem[]) => {
+          if (!cards) return;
           set(() => {
             return {
               visibleCards: cards.filter((item) => item.isVisible),
-              deletedCards: cards.filter((item) => item.isDeleted),
+              deletedCards: [],
               error: "",
               isPersist: true,
             };

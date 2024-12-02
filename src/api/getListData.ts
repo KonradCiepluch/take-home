@@ -6,7 +6,6 @@ export type ListItem = {
   title: string;
   description: string;
   isVisible: boolean;
-  isDeleted: boolean;
   isExpanded: boolean;
 };
 
@@ -33,7 +32,6 @@ export const useGetListData = (isPersist: boolean) => {
         return {
           ...item,
           isVisible: getRandom() > 50,
-          isDeleted: false,
           isExpanded: false,
         };
       });
@@ -50,8 +48,7 @@ const sleep = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const shuffle = <T extends any[]>(array: T): T => {
+const shuffle = <T extends unknown[]>(array: T): T => {
   for (let i = array.length - 1; i >= 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     const temp = array[i];

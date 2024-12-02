@@ -1,8 +1,8 @@
 import { FC } from "react";
-import { DeleteButton, ExpandButton } from "./Buttons";
+import { ToggleButton } from "./Buttons";
 import { ListItem } from "../api/getListData";
 import { cx } from "../utils";
-import { ChevronDownIcon } from "./icons";
+import { ChevronDownIcon, XMarkIcon } from "./icons";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 type CardProps = Pick<ListItem, "title" | "description" | "isExpanded"> & {
@@ -23,7 +23,7 @@ export const Card: FC<CardProps> = ({
     return (
       <li className="border border-black px-2 py-1.5 ">
         <div className="flex justify-between mb-0.5">
-          <h2 className="font-medium">{title}</h2>
+          <h3 className="font-medium">{title}</h3>
         </div>
       </li>
     );
@@ -33,7 +33,7 @@ export const Card: FC<CardProps> = ({
       <div className="flex justify-between mb-0.5">
         <h3 className="font-medium">{title}</h3>
         <div className="flex">
-          <ExpandButton
+          <ToggleButton
             className={cx(
               "transition-transform",
               "duration-300",
@@ -42,8 +42,10 @@ export const Card: FC<CardProps> = ({
             onClick={expandCard}
           >
             <ChevronDownIcon />
-          </ExpandButton>
-          <DeleteButton onClick={deleteCard} />
+          </ToggleButton>
+          <ToggleButton onClick={deleteCard}>
+            <XMarkIcon />
+          </ToggleButton>
         </div>
       </div>
       {isExpanded && <p className={"text-sm"}>{description}</p>}
